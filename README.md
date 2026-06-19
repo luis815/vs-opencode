@@ -33,6 +33,7 @@ docker run -d \
 
 - `OPENCODE_PORT` - Port for OpenCode Web (default: `4096`)
 - `OPENCODE_HOSTNAME` - Hostname/IP for OpenCode Web to bind to (default: `0.0.0.0`)
+- `CODE_TUNNEL_NAME` - Name for VS Code Tunnel (default: `coder-env`)
 
 #### Override Example
 
@@ -41,6 +42,7 @@ docker run -d \
   --name coder-env \
   -e OPENCODE_PORT=8080 \
   -e OPENCODE_HOSTNAME=127.0.0.1 \
+  -e CODE_TUNNEL_NAME=my-custom-tunnel \
   -p 8080:8080 \
   coder-env
 ```
@@ -56,6 +58,7 @@ docker run -d \
 Provides remote access to VS Code through secure tunnels.
 - **Command:** `code tunnel --accept-server-license-terms`
 - **User:** umbrel
+- **Tunnel Name:** Configurable via `CODE_TUNNEL_NAME` environment variable (default: `coder-env`)
 
 ### OpenCode Web
 Web-based code editor accessible in your browser.
@@ -69,6 +72,7 @@ Web-based code editor accessible in your browser.
 - **Base Image:** Fedora 44
 - **Process Manager:** Bash entrypoint script with background processes
 - **Non-root User:** umbrel (security best practice)
+- **Project Directory:** `/home/umbrel/projects` - Default directory for project files
 - **Installed Tools:**
   - Git
   - VS Code CLI

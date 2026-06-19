@@ -22,6 +22,9 @@ ENV OPENCODE_PORT=4096
 # Set default hostname for OpenCode
 ENV OPENCODE_HOSTNAME=0.0.0.0
 
+# Set default tunnel name for VS Code
+ENV CODE_TUNNEL_NAME=coder-env
+
 # ============================================================================
 # Install VS Code CLI (Linux x64)
 # ============================================================================
@@ -50,5 +53,8 @@ RUN curl -fsSL https://opencode.ai/install | bash
 
 # Install proto via install script (non-interactive mode)
 RUN bash <(curl -fsSL https://moonrepo.dev/install/proto.sh) --yes
+
+# Create projects directory
+RUN mkdir -p /home/umbrel/projects
 
 CMD ["/usr/local/bin/entrypoint.sh"]
