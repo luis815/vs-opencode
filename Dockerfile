@@ -26,7 +26,7 @@ ENV OPENCODE_HOSTNAME=0.0.0.0
 # Install VS Code CLI (Linux x64)
 # ============================================================================
 WORKDIR /tmp
-RUN curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-linux-x64' \
+RUN curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-x64' \
     --output vscode_cli.tar.gz && \
     tar -xf vscode_cli.tar.gz && \
     mv code /usr/local/bin/ && \
