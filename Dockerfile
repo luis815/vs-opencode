@@ -14,7 +14,7 @@ RUN dnf install -y \
 RUN useradd -m -s /bin/bash umbrel
 
 # Set environment paths globally
-ENV PATH="/home/umbrel/.local/bin:/home/umbrel/.proto/bin:${PATH}"
+ENV PATH="/home/umbrel/.opencode/bin:/home/umbrel/.proto/bin:${PATH}"
 
 # Set default port for OpenCode
 ENV OPENCODE_PORT=4096
