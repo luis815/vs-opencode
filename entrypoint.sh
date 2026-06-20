@@ -10,6 +10,15 @@ if [ -n "$PUID" ] && [ -n "$PGID" ] && [ "$(stat -c '%u' "$HOME")" = "0" ]; then
     echo "Remapping container user to PUID=$PUID, PGID=$PGID..."
     sudo usermod -u "$PUID" vsopencode
     sudo groupmod -g "$PGID" vsopencode
+
+    # Populate home from /etc/skel if key dotfiles are missing
+    # This is needed when a host directory is bind-mounted over $HOME,
+    # since bind mounts start empty and lack .bashrc, .bash_profile, etc.
+    if [ ! -f "$HOME/.bashrc" ] || [ ! -f "$HOME/.bash_profile" ]; then
+        echo "Populating home directory from /etc/skel..."
+        sudo cp -rn /etc/skel/. "$HOME"
+    fi
+
     sudo chown -R "$PUID:$PGID" "$HOME"
 fi
 
