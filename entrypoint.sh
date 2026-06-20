@@ -50,7 +50,7 @@ fi
 source "$HOME/.bashrc"
 
 # Run both processes in background
-code tunnel --name "$CODE_TUNNEL_NAME" --accept-server-license-terms &
+code tunnel --name "$CODE_TUNNEL_NAME" --accept-server-license-terms 2>&1 | tee >(grep --line-buffered 'login/device' > "$HOME/tunnel-code.txt") &
 opencode web --hostname "$OPENCODE_HOSTNAME" --port "$OPENCODE_PORT" &
 
 # Wait for all background processes
