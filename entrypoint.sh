@@ -50,8 +50,8 @@ fi
 source "$HOME/.bashrc"
 
 # Run both processes in background
-/usr/local/bin/code tunnel --name "$CODE_TUNNEL_NAME" --accept-server-license-terms &
-"$HOME/.opencode/bin/opencode" web --hostname "$OPENCODE_HOSTNAME" --port "$OPENCODE_PORT" &
+code tunnel --name "$CODE_TUNNEL_NAME" --accept-server-license-terms &
+opencode web --hostname "$OPENCODE_HOSTNAME" --port "$OPENCODE_PORT" &
 
 # Wait for all background processes
 wait
