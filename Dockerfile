@@ -8,13 +8,22 @@ RUN dnf install -y \
     gzip \
     xz \
     curl \
+    sudo \
+    which \
+    vim \
+    nano \
+    jq \
+    iputils \
+    wget \
+    procps-ng \
+    tree \
     && dnf clean all
 
-# Create non-root user "umbrel" with home directory
-RUN useradd -m -s /bin/bash umbrel
-
-# Set environment paths globally
-ENV PATH="/home/umbrel/.opencode/bin:/home/umbrel/.proto/bin:${PATH}"
+# Create non-root user "vsopencode" with home directory
+RUN useradd -m -s /bin/bash vsopencode && \
+    usermod -aG wheel vsopencode && \
+    echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/vsopencode && \
+    chmod 0440 /etc/sudoers.d/vsopencode
 
 # Set default port for OpenCode
 ENV OPENCODE_PORT=4096
@@ -23,7 +32,7 @@ ENV OPENCODE_PORT=4096
 ENV OPENCODE_HOSTNAME=0.0.0.0
 
 # Set default tunnel name for VS Code
-ENV CODE_TUNNEL_NAME=coder-env
+ENV CODE_TUNNEL_NAME=vs-opencode
 
 # ============================================================================
 # Install VS Code CLI (Linux x64)
@@ -43,18 +52,9 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # ============================================================================
-# Install OpenCode and proto as the umbrel user
+# Switch to non-root user and prepare home directory
 # ============================================================================
-USER umbrel
-WORKDIR /home/umbrel
-
-# Install OpenCode via install script
-RUN curl -fsSL https://opencode.ai/install | bash
-
-# Install proto via install script (non-interactive mode)
-RUN bash <(curl -fsSL https://moonrepo.dev/install/proto.sh) --yes
-
-# Create projects directory
-RUN mkdir -p /home/umbrel/projects
+USER vsopencode
+WORKDIR /home/vsopencode
 
 CMD ["/usr/local/bin/entrypoint.sh"]
