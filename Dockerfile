@@ -17,6 +17,7 @@ RUN dnf install -y \
     wget \
     procps-ng \
     tree \
+    xdg-utils \
     && dnf clean all
 
 # Create non-root user "vsopencode" with home directory

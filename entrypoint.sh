@@ -1,6 +1,18 @@
 #!/bin/bash
 set -e
 
+# If PUID and PGID are provided, remap the container user to match the host IDs.
+# This avoids permission issues when bind-mounting a host directory over $HOME,
+# since the host user (e.g., umbrel) may have a different UID/GID than vsopencode.
+# Only remap if $HOME is currently owned by root (i.e., not a bind mount with
+# proper ownership already).
+if [ -n "$PUID" ] && [ -n "$PGID" ] && [ "$(stat -c '%u' "$HOME")" = "0" ]; then
+    echo "Remapping container user to PUID=$PUID, PGID=$PGID..."
+    sudo usermod -u "$PUID" vsopencode
+    sudo groupmod -g "$PGID" vsopencode
+    sudo chown -R "$PUID:$PGID" "$HOME"
+fi
+
 # Install OpenCode if not already present (preserved across bind mounts)
 if [ ! -f "$HOME/.opencode/bin/opencode" ]; then
     echo "Installing OpenCode..."
